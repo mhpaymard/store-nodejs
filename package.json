@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start":"node index",
+    "dev": "nodemon index"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mohammad Hosein Paymard",
   "license": "ISC",
   "dependencies": {
     "auto-bind": "^4.0.0",
