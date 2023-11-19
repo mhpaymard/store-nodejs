@@ -2,6 +2,7 @@ const path = require('path');
 
 const { AllRoutes } = require('./routes/router');
 
+const createHttpError = require('http-errors');
 const morgan = require('morgan');
 
 module.exports = {
@@ -12,10 +13,10 @@ module.exports = {
         #PORT;
         #DB_URL;
         constructor({ PORT, DB_URL }) {
-            this.#PORT = PORT || 3000;
+            this.#PORT = PORT || 5000;
             this.#DB_URL = DB_URL;
-            this.createRoutes();
             this.configApplication();
+            this.createRoutes();
             this.createServer();
             this.connectToDB();
             this.errorHandling();
@@ -53,19 +54,15 @@ module.exports = {
         }
         errorHandling() {
             this.#app.use((req, res, next) => {
-                return res.status(404).json({
-                    error: {
-                        status: 404,
-                        message: 'چنین آدرسی وجود ندارد'
-                    }
-                })
+                next(createHttpError.NotFound('صفحه ای با این آدرس یافت نشد'))
             })
             this.#app.use((error, req, res, next) => {
-                const status = error?.status || 500;
-                const message = error?.message || 'InternalServerError';
-                return res.status(status).json({
+                const defaultError = createHttpError.InternalServerError();
+                const statusCode = error?.status || defaultError.status;
+                const message = error?.message || defaultError.message;
+                return res.status(statusCode).json({
                     error: {
-                        status,
+                        statusCode,
                         message
                     }
                 })
