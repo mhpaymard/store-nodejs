@@ -1,5 +1,9 @@
 const path = require('path');
+
 const { AllRoutes } = require('./routes/router');
+
+const morgan = require('morgan');
+
 module.exports = {
     Application: class Application {
         #express = require('express');
@@ -22,7 +26,8 @@ module.exports = {
             })
         }
         configApplication() {
-            this.#app.use(this.#express.json())
+            this.#app.use(morgan('dev'));
+            this.#app.use(this.#express.json());
             this.#app.use(this.#express.urlencoded({ extended: true }));
             this.#app.use(this.#express.static(path.join(__dirname, '..', 'public')));
         }

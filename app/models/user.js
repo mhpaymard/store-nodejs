@@ -8,16 +8,23 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     username: {
-        type: String
+        type: String,
+        lowercase: true,
+        trim: true,
+        required: true
     },
     phone: {
         type: String
     },
     email: {
-        type: String
+        type: String,
+        lowercase: true,
+        trim: true,
+        required: true
     },
     password: {
-        type: String
+        type: String,
+        required:true
     },
     otp: {
         type: Object,
